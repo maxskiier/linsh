@@ -1,0 +1,6 @@
+#ifndef SHELL_DEFINES_H
+#define SHELL_DEFINES_H
+
+#define COMMAND_SIZE_MAX 1024
+
+#endif /* SHELL_DEFINES_H */
