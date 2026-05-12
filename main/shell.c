@@ -1,10 +1,12 @@
 #include <errno.h>
+#include <signal.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <pwd.h>
 
@@ -63,6 +65,9 @@ int main(int argc, char **argv) {
 			continue;
 		}
 
+		if (!strcmp(tokbuf[0], "exec"))
+			execvp(tokbuf[1], (char * const *)tokbuf);
+
 		pid_t pid = fork();
 		if (!pid) {
 			execvp(tokbuf[0], (char * const *)tokbuf);
@@ -70,5 +75,4 @@ int main(int argc, char **argv) {
 		}
 		wait(NULL);
 	}
-	
 }
