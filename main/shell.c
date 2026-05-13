@@ -18,8 +18,8 @@ char *buf;
 char **tokbuf;
 
 int main(int argc, char **argv) {
-	buf = calloc(1, COMMAND_SIZE_MAX);
-	tokbuf = calloc(1, COMMAND_SIZE_MAX);
+	buf = calloc(1, TOKEN_SIZE_MAX);
+	tokbuf = calloc(LINSH_MAX_TOKENS, TOKEN_SIZE_MAX);
 	struct passwd *pw = getpwuid(getuid());
 	char is_root = '$';
 
@@ -34,13 +34,14 @@ int main(int argc, char **argv) {
 	signal(SIGINT, sigint_hdlr);
 
 	/* Allocate space for the pointer array */
-	for (int i = 1; i * sizeof(char *) < COMMAND_SIZE_MAX; i++)
-		tokbuf[i-1] = calloc(1, COMMAND_SIZE_MAX / sizeof(char *));
+	for (int i = 1; i * sizeof(char *) < TOKEN_SIZE_MAX; i++)
+		tokbuf[i-1] = calloc(1, TOKEN_SIZE_MAX / sizeof(char *));
 
 	while (true) {
+		memset(buf, 0, TOKEN_SIZE_MAX);
 		/* Get input here */
-		printf("%s %c ", getcwd(buf, COMMAND_SIZE_MAX-1), is_root);
-		fgets(buf, COMMAND_SIZE_MAX-1, stdin);
+		printf("%s %c ", getcwd(buf, TOKEN_SIZE_MAX-1), is_root);
+		fgets(buf, TOKEN_SIZE_MAX-1, stdin);
 		strtok(buf, "\n");
 
 		/* Let's get tokens and check for our builtins */
@@ -66,13 +67,18 @@ int main(int argc, char **argv) {
 		}
 
 		if (!strcmp(tokbuf[0], "exec"))
-			execvp(tokbuf[1], (char * const *)tokbuf);
+			execvp(tokbuf[1], (char * const *)tokbuf + sizeof(char *));
 
 		pid_t pid = fork();
 		if (!pid) {
 			execvp(tokbuf[0], (char * const *)tokbuf);
-			perror(strerror(errno));
+			perror("linsh");
+			exit(-1);
 		}
-		wait(NULL);
+
+		int status;
+		waitpid(pid, &status, 0);
 	}
+	free(buf);
+	free(tokbuf);
 }

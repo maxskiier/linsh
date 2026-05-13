@@ -12,5 +12,5 @@ void get_str_token(char *str) {
 	tokbuf[0] = strtok(tmp, " ");
 	do {
 		tokbuf[i] = strtok(NULL, " ");
-	} while (tokbuf[i++] && i < COMMAND_SIZE_MAX / sizeof(char *));
+	} while (tokbuf[i++] && i < LINSH_MAX_TOKENS * TOKEN_SIZE_MAX / sizeof(char *));
 }

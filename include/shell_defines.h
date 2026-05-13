@@ -1,6 +1,7 @@
 #ifndef SHELL_DEFINES_H
 #define SHELL_DEFINES_H
 
-#define COMMAND_SIZE_MAX 1024
+#define TOKEN_SIZE_MAX 256
+#define LINSH_MAX_TOKENS 128
 
 #endif /* SHELL_DEFINES_H */
