@@ -21,7 +21,8 @@ int main(int argc, char **argv) {
 	buf = calloc(1, TOKEN_SIZE_MAX);
 	tokbuf = calloc(LINSH_MAX_TOKENS, TOKEN_SIZE_MAX);
 	struct passwd *pw = getpwuid(getuid());
-	char is_root = '$';
+	char is_root = '=';
+	__attribute__((cleanup(free_helper))) char *path = NULL;
 
 	if (!pw) {
 		puts("error loading passwd");
@@ -41,7 +42,8 @@ int main(int argc, char **argv) {
 start:
 		memset(buf, 0, TOKEN_SIZE_MAX);
 		/* Get input here */
-		printf("%s %c ", getcwd(buf, TOKEN_SIZE_MAX-1), is_root);
+		printf("[%s@%s %s] %c> ", pw->pw_name, int_get_ptr(gethostname, buf, TOKEN_SIZE_MAX-1),
+		       get_last_dir(path, getcwd(buf, TOKEN_SIZE_MAX-1)), is_root);
 		fgets(buf, TOKEN_SIZE_MAX-1, stdin);
 		strtok(buf, "\n");
 		for (int i = -(strlen(buf)); i; i++) {
