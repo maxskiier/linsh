@@ -1,3 +1,4 @@
 *.o
 linsh
 *.pch
+*.patch

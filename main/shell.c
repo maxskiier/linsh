@@ -38,11 +38,18 @@ int main(int argc, char **argv) {
 		tokbuf[i-1] = calloc(1, TOKEN_SIZE_MAX / sizeof(char *));
 
 	while (true) {
+start:
 		memset(buf, 0, TOKEN_SIZE_MAX);
 		/* Get input here */
 		printf("%s %c ", getcwd(buf, TOKEN_SIZE_MAX-1), is_root);
 		fgets(buf, TOKEN_SIZE_MAX-1, stdin);
 		strtok(buf, "\n");
+		for (int i = -(strlen(buf)); i; i++) {
+			if (buf[i+strlen(buf)] <= ' ')
+				goto start;
+			else
+				break;
+		}
 
 		/* Let's get tokens and check for our builtins */
 		get_str_token(buf);
