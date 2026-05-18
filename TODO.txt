@@ -1,6 +1,0 @@
-LINSH todos:
- - Fix nb_get_input()
- - Add history searching
- - Add aliasing
- - Add config file ~/.linshrc
- - Switch over to raw mode for STDIN
