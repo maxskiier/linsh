@@ -48,8 +48,9 @@ start:
 		       get_last_dir(path, getcwd(tmp, TOKEN_SIZE_MAX-1)), is_root);
 		fgets(buf, TOKEN_SIZE_MAX-1, stdin);
 		strtok(buf, "\n");
-		for (int i = -(strlen(buf)); i; i++) {
-			if (buf[i+strlen(buf)] <= ' ')
+		int len = strlen(buf);
+		for (int i = -len; i; i++) {
+			if (buf[i+len] <= ' ')
 				goto start;
 			else
 				break;
