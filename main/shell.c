@@ -22,9 +22,14 @@ int main(int argc, char **argv) {
 	tokbuf = calloc(LINSH_MAX_TOKENS, TOKEN_SIZE_MAX);
 	struct passwd *pw = getpwuid(getuid());
 	char is_root = '=';
+	bool is_loginsh = false;
 	__attribute__((cleanup(free_helper))) char *path = malloc(TOKEN_SIZE_MAX);
 	__attribute__((cleanup(free_helper))) char *tmp = malloc(TOKEN_SIZE_MAX);
 
+	if (!strcmp(argv[0], "-linsh"))
+		is_loginsh = true;
+	else if (argc > 1 && !strcmp(argv[1], "--login"))
+		is_loginsh = true;
 
 	if (!pw) {
 		puts("error loading passwd");
@@ -59,8 +64,18 @@ start:
 		/* Let's get tokens and check for our builtins */
 		get_str_token(buf);
 
-		if (!strcmp(buf, "exit"))
+		if (!strcmp(tokbuf[0], "exit")) {
+			puts("exit");
 			exit(0);
+		}
+
+		if (!strcmp(tokbuf[0], "logout")) {
+			if (!is_loginsh) {
+				puts("linsh: not a login shell");
+				continue;
+			}
+			exit(0);
+		}
 
 		if (!strcmp(tokbuf[0], "cd")) {
 			if (tokbuf[1]) {
