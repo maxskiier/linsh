@@ -35,7 +35,9 @@ Git Operations
 I don't really care how you get your changes to me (so either via GitHub web
 interface or via patch-email), so long as it follows these conventions:
 
+------------------------------
 1. Descriptive commit message.
+------------------------------
 
 Don't send me something like:
 
@@ -46,7 +48,9 @@ hey broski i tried idk"
 Send me a thorough list of changes you're making (but don't be obnoxious about
 it).
 
+------
 2. DCO
+------
 
 We use the DCO (aka the Developer's Certificate of Origin) on all commits to
 linsh. That means, you are _REQUIRED_ to sign-off all of your commits in the
@@ -60,7 +64,9 @@ Signed-off-by: first-name (middle-name if you want) last-name <email>
 
 This goes for everyone who handled the patch as well.
 
+----------------------------
 3. Separate logical changes.
+----------------------------
 
 While this one may have been broken in old commits, it's important that it gets
 established now so if we ever need to bisect for a commit that caused an issue,
