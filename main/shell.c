@@ -17,25 +17,30 @@
 char *buf;
 char **tokbuf;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { /* argc = number of arguments, argv is list of arguments */
+	/* Allocate space */
 	buf = calloc(1, TOKEN_SIZE_MAX);
-	tokbuf = calloc(LINSH_MAX_TOKENS, TOKEN_SIZE_MAX);
+	tokbuf = calloc(LINSH_MAX_TOKENS, TOKEN_SIZE_MAX); 
+	
 	struct passwd *pw = getpwuid(getuid());
 	char is_root = '=';
 	bool is_loginsh = false;
 	__attribute__((cleanup(free_helper))) char *path = malloc(TOKEN_SIZE_MAX);
 	__attribute__((cleanup(free_helper))) char *tmp = malloc(TOKEN_SIZE_MAX);
 
+	/* Allocate space for the pointer array */
 	if (!strcmp(argv[0], "-linsh"))
 		is_loginsh = true;
 	else if (argc > 1 && !strcmp(argv[1], "--login"))
 		is_loginsh = true;
 
+	
 	if (!pw) {
 		puts("error loading passwd");
 		exit(-1);
 	}
 
+	/* Check for root */
 	if (!strcmp(pw->pw_name, "root"))
 		is_root = '#';
 
@@ -60,7 +65,16 @@ start:
 			else
 				break;
 		}
-
+		
+		/* 
+		Command list:
+		 - exit:  closes linsh
+		 - logout: literally the same as exit
+		 - cd: changes current directory to the argument
+		 - clear: clears the screen
+		 - exec: executes things i think idk
+		*/
+		
 		/* Let's get tokens and check for our builtins */
 		get_str_token(buf);
 
@@ -80,8 +94,13 @@ start:
 		if (!strcmp(tokbuf[0], "cd")) {
 			if (tokbuf[1]) {
 				if (!strcmp(tokbuf[1], "~"))
-					chdir(getenv("HOME"));
-				chdir(tokbuf[1]);
+					char *home = getenv("HOME");
+    				if (home) chdir(home);
+				else {
+					if (chdir(tokbuf[1]) != 0) {
+        				perror("cd: directory not found\n");
+    				}
+				}
 			} else
 				puts("cd: missing operand\n");
 			continue;
