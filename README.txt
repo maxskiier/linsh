@@ -39,14 +39,8 @@ interface or via patch-email), so long as it follows these conventions:
 1. Descriptive commit message.
 ------------------------------
 
-Don't send me something like:
-
-"yo broski
-
-hey broski i tried idk"
-
-Send me a thorough list of changes you're making (but don't be obnoxious about
-it).
+Pretty simple. Send me a thorough list of changes you're making, as well as the
+issue, problem, etc that your commit solves.
 
 ------
 2. DCO
