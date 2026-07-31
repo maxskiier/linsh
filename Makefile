@@ -12,14 +12,7 @@ _obj_comp:
 	$(CC) $(flags) -c $(required_files)
 
 install:
-	@if [ "$$(whoami)" = "root" ]; then \
-		echo "warning: bypassing user check, user is root"; \
-		install linsh /usr/bin/linsh; \
-		echo /usr/bin/linsh | tee -a /etc/shells; \
-	else \
-		echo "info: user is NOT root, using sudo"; \
-		sudo install linsh /usr/bin/linsh; \
-		echo /usr/bin/linsh | sudo tee -a /etc/shells; \
-	fi
+	@install linsh /usr/bin/linsh
+	@echo /usr/bin/linsh | tee -a /etc/shells
 
 	@echo "info: make linsh your standard shell with 'chsh -s /usr/bin/linsh'"
