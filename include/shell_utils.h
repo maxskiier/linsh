@@ -11,4 +11,6 @@ void free_helper(char **ptr);
 
 char *int_get_ptr(int (*func)(char *ptr, size_t size), char *ptr, size_t size);
 
+void envar_parse_str(char **tok_str);
+
 #endif /* SHELL_UTILS_H */

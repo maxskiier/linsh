@@ -64,6 +64,8 @@ start:
 		/* Let's get tokens and check for our builtins */
 		get_str_token(buf);
 
+		envar_parse_str(tokbuf);
+
 		if (!strcmp(tokbuf[0], "exit")) {
 			puts("exit");
 			exit(0);
