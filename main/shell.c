@@ -98,6 +98,11 @@ start:
 		if (!strcmp(tokbuf[0], "exec"))
 			execvp(tokbuf[1], (char * const *)tokbuf + sizeof(char *));
 
+		if (!strcmp(tokbuf[0], "export")) {
+			export_envvar(tokbuf);
+			continue;
+		}
+
 		pid_t pid = fork();
 		if (!pid) {
 			execvp(tokbuf[0], (char * const *)tokbuf);
