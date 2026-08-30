@@ -106,7 +106,7 @@ start:
 		pid_t pid = fork();
 		if (!pid) {
 			execvp(tokbuf[0], (char * const *)tokbuf);
-			perror("linsh");
+			perror(tokbuf[0]);
 			exit(-1);
 		}
 
